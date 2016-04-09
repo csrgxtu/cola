@@ -20,3 +20,24 @@ func (this *MainController) Welcome() {
   this.Data["json"] = &rt
   this.ServeJSON()
 }
+
+func (this *MainController) Read() {
+  var rt models.Result
+  var q = this.GetString(":q")
+  var skip = this.GetString(":skip")
+  var limit = this.GetString(":limit")
+  beego.Info(q)
+  beego.Info(skip)
+  beego.Info(limit)
+
+  err, rtv := services.Read(q, skip, limit)
+  if err != nil {
+    rt.Error = true
+    rt.Msg = err.Error()
+  } else {
+    rt.Error = false
+    rt.Msg = "Successful"
+  }
+  this.Data["json"] = &rt
+  this.ServeJSON()
+}
