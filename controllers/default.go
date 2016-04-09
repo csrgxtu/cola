@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+  "strconv"
   "cola/models"
+  "cola/services"
 )
 
 type MainController struct {
@@ -24,13 +26,10 @@ func (this *MainController) Welcome() {
 func (this *MainController) Read() {
   var rt models.Result
   var q = this.GetString(":q")
-  var skip = this.GetString(":skip")
-  var limit = this.GetString(":limit")
-  beego.Info(q)
-  beego.Info(skip)
-  beego.Info(limit)
+  skip, _ := strconv.Atoi(this.GetString(":skip"))
+  limit, _ := strconv.Atoi(this.GetString(":limit"))
 
-  err, rtv := services.Read(q, skip, limit)
+  err, _ := services.Read(q, skip, limit)
   if err != nil {
     rt.Error = true
     rt.Msg = err.Error()
